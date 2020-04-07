@@ -61,43 +61,30 @@
 
 		<!-- 検索フォーム -->
 		<div id="forms">
-			<form action="" class="form-inline" role="form">
+			<form th:action="@{/show_list}" class="form-inline" role="form" method="post">
 				<div class="form-group">
-					<input type="input" class="form-control" id="name"
-						placeholder="item name">
+					<input type="text" class="form-control" id="name" name="name" placeholder="item name">
 				</div>
 				<div class="form-group">
 					<i class="fa fa-plus"></i>
 				</div>
 				<div class="form-group">
-					<select class="form-control" th:each="item:${itemPage.content}">
-						<option>- parentCategory -</option>
-						<option th:each="item:${itemPage.content}" th:text>parentCategory1</option>
-						<option>parentCategory2</option>
-						<option>parentCategory3</option>
-						<option>parentCategory4</option>
-						<option>parentCategory5</option>
-					</select> <select class="form-control">
-						<option>- childCategory -</option>
-						<option>childCategory1</option>
-						<option>childCategory2</option>
-						<option>childCategory3</option>
-						<option>childCategory4</option>
-						<option>childCategory5</option>
-					</select> <select class="form-control">
-						<option>- grandChild -</option>
-						<option>grandChild1</option>
-						<option>grandChild2</option>
-						<option>grandChild3</option>
-						<option>grandChild4</option>
-						<option>grandChild5</option>
+					<select class="form-control" id="parent-category" name="parentCategoryId">
+						<option id="sample-option" th:value=0>- parentCategory -</option>
+						<option th:each="parentCategory:${parentCategoryList}" th:text="${parentCategory.name}" th:value="${parentCategory.id}">parentCategory1</option>
+					</select> 
+					<select class="form-control" id="child-category" name="childCategoryId">
+						<option th:value=0>- childCategory -</option>
+					</select> 
+					<select class="form-control" id="grand-child-category" name="grandChildCategoryId">
+						<option th:value=0>- grandChild -</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<i class="fa fa-plus"></i>
 				</div>
 				<div class="form-group">
-					<input type="text" class="form-control" placeholder="brand">
+					<input type="text" class="form-control" name="brand" placeholder="brand">
 				</div>
 				<div class="form-group"></div>
 				<button type="submit" class="btn btn-default">
@@ -118,6 +105,7 @@
 
 		<!-- table -->
 		<div class="table-responsive">
+			<div th:text="${page} + of + ${itemPageMax}"></div>
 			<table id="item-table" class="table table-hover table-condensed">
 				<thead>
 					<tr>
@@ -130,7 +118,7 @@
 				</thead>
 				<tbody>
 					<tr th:each="item:${itemPage.content}">
-						<td class="item-name" th:text="${item.name}"><a href="./detail.html">Razer
+						<td class="item-name" ><a th:text="${item.name}" th:href="@{'/detail?id=' + ${item.id}}">Razer
 								BlackWidow Chroma Keyboard</a></td>
 						<td class="item-price" th:text="${item.price}">52.0</td>
 						<td class="item-category" th:text="${item.category.nameAll}"><a href="">Electronics</a> / <a
@@ -154,10 +142,10 @@
 			</nav>
 			<!-- ページ番号を指定して表示するフォーム -->
 			<div id="select-page">
-				<form class="form-inline">
+				<form class="form-inline" th:action="@{/show_list}" method="POST">
 					<div class="form-group">
 						<div class="input-group col-xs-6">
-							<label></label> <input type="text" class="form-control">
+							<label></label> <input type="text" class="form-control" name="page">
 							<!-- 総ページ数 -->
 							<div class="input-group-addon">/ 20</div>
 						</div>
@@ -169,5 +157,6 @@
 			</div>
 		</div>
 	</div>
+<script th:src="@{/script.js}"></script>
 </body>
 </html>

@@ -7,9 +7,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import com.example.domain.Category;
 
+@Repository
 public class CategoryRepository {
 	
 	@Autowired
@@ -36,8 +38,8 @@ public class CategoryRepository {
 		String sql = "SELECT id, parent, name, name_all "
 					+ "FROM category "
 					+ "WHERE parent IS NULL AND name_all IS NULL";
-		List<Category> categoryList = template.query(sql, CATEGORY_ROW_MAPPER);
-		return categoryList;
+		List<Category> parentCategoryList = template.query(sql, CATEGORY_ROW_MAPPER);
+		return parentCategoryList;
 	}
 	
 	/**
@@ -51,8 +53,8 @@ public class CategoryRepository {
 				+ "FROM category "
 				+ "WHERE parent = :parentId";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("parentId", parentId);
-		List<Category> categoryList = template.query(sql, param, CATEGORY_ROW_MAPPER);
-		return categoryList;
+		List<Category> childCategoryList = template.query(sql, param, CATEGORY_ROW_MAPPER);
+		return childCategoryList;
 	}
 	
 	/**
@@ -66,8 +68,8 @@ public class CategoryRepository {
 				+ "FROM category "
 				+ "WHERE parent = :childId";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("childId", childId);
-		List<Category> categoryList = template.query(sql, param, CATEGORY_ROW_MAPPER);
-		return categoryList;
+		List<Category> grandChildCategoryList = template.query(sql, param, CATEGORY_ROW_MAPPER);
+		return grandChildCategoryList;
 	}
 	
 	
